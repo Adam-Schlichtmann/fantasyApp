@@ -17,7 +17,9 @@ const TeamInfo = props => {
       <Text>{props.data.name}</Text>
       {props.data.roster.map(player => (
         <View key={player.id}>
-          <Text>{player.fullName}</Text>
+          <Text>
+            {player.fullName} {player.injuryStatus}
+          </Text>
         </View>
       ))}
     </View>
