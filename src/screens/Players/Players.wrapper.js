@@ -45,11 +45,12 @@ class PlayersWrapper extends Component {
       .getFreeAgents({ seasonId: 2019, scoringPeriodId: 1 })
       .then(player => {
         const players = [...this.state.players, ...player];
-        this.setState({ allPlayers: players });
+        this.setState({ allPlayers: players, players: players });
       });
   }
 
   filterPlayers = searchText => {
+    console.log("run");
     this.setState({ searchText }, () => {
       if (this.state.searchText !== "") {
         const players = this.state.allPlayers;
@@ -65,6 +66,13 @@ class PlayersWrapper extends Component {
 
   onChangeText = text => this.setState({ searchText: text });
 
+  goToPlayerInfo = name => {
+    const player = this.state.players.find(
+      player => player.player.fullName === name
+    );
+    this.props.navigation.navigate("PlayerInfo", { player: player });
+  };
+
   render() {
     return (
       <Players
@@ -72,6 +80,7 @@ class PlayersWrapper extends Component {
         searchText={this.state.searchText}
         players={this.state.players}
         allPlayers={this.state.allPlayers}
+        goToPlayerInfo={this.goToPlayerInfo}
       />
     );
   }

@@ -1,12 +1,19 @@
 import React, { useStyles } from "react";
-import { View, Text, TextInput, FlatList } from "react-native";
+import { View, Text, TextInput, FlatList, ScrollView } from "react-native";
 import PropTypes from "prop-types";
+import debounce from "lodash";
+
+import ListItem from "./ListItem";
 
 import PlayersStyles from "./Players.styles";
 
 const Players = props => {
+  // console.log(
+  //   props.players.find(player => player.player.fullName === "Adam Vinatieri")
+  // );
+
   return (
-    <View style={PlayersStyles.pageContainer}>
+    <ScrollView style={PlayersStyles.pageContainer}>
       <View
         style={{
           flexDirection: "row",
@@ -25,19 +32,28 @@ const Players = props => {
             margin: 10,
             padding: 5
           }}
-          onChangeText={text => props.filterPlayers(text)}
+          onChangeText={text => debounce(props.filterPlayers(text), 400)}
           value={props.searchText}
           placeholder={"Enter Player"}
         ></TextInput>
       </View>
       <View>
-        {props.players.map(player => (
+        {props.players.length > 0 ? (
+          props.players.map(player => (
+            <ListItem
+              player={player}
+              goToPlayerInfo={() =>
+                props.goToPlayerInfo(player.player.fullName)
+              }
+            />
+          ))
+        ) : (
           <View>
-            <Text>{player.player.fullName}</Text>
+            <Text>No Players</Text>
           </View>
-        ))}
+        )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -46,7 +62,8 @@ Players.propTypes = {
   filterPlayers: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired,
   players: PropTypes.arrayOf(PropTypes.object).isRequired,
-  allPlayers: PropTypes.arrayOf(PropTypes.object).isRequired
+  allPlayers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  goToPlayerInfo: PropTypes.func.isRequired
 };
 
 Players.defaultProps = {

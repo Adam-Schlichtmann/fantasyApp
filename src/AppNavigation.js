@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import Home from "./screens/Home";
 import Players from "./screens/Players";
 import LeagueInfo from "./screens/TeamInfo";
+import PlayerInfo from "./screens/PlayerInfo";
 
 const HomeStack = createStackNavigator({
   Home: Home,
@@ -12,7 +13,8 @@ const HomeStack = createStackNavigator({
 });
 
 const PlayersStack = createStackNavigator({
-  Players: Players
+  Players: Players,
+  PlayerInfo: PlayerInfo
 });
 
 const TabNavigator = createBottomTabNavigator({
